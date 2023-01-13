@@ -4,6 +4,7 @@ package ro.mycode.autovitapi.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Table(name="masini")
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 public class Masina implements Comparable<Masina> {
 
 
@@ -23,14 +25,19 @@ public class Masina implements Comparable<Masina> {
     private String owner;
     private String brand;
     private int year;
-    private String motorType;
 
-    public Masina(String owner, String brand, int year, String motorType) {
+    private String color;
+
+    private String make;
+
+    public Masina(String owner, String brand, int year, String color, String make) {
         this.owner = owner;
         this.brand = brand;
         this.year = year;
-        this.motorType = motorType;
+        this.color = color;
+        this.make = make;
     }
+
 
 
     @Override
@@ -45,16 +52,17 @@ public class Masina implements Comparable<Masina> {
 
     @Override
     public String toString(){
-        return owner+","+brand+","+year+","+motorType;
+        return owner+","+brand+","+year+","+color+","+make;
     }
 
     @Override
     public boolean equals(Object obj){
         Masina m = (Masina) obj;
-        if(this.owner.equals(m.owner)&&this.brand.equals(m.brand)&&this.year==m.year&&this.motorType.equals(m.motorType)){
+        if(this.owner.equals(m.owner)&&this.brand.equals(m.brand)&&this.year==m.year&&this.color.equals(m.color)&&this.make.equals(m.make)){
             return true;
         }
         return false;
     }
+
 }
 
