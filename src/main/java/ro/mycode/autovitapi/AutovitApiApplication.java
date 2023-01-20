@@ -17,14 +17,15 @@ public class AutovitApiApplication {
 	}
 
 
-	@Bean
-	CommandLineRunner commandLineRunner(MasinaRepo masinaRepo){
-		return args -> {
-
-
-			System.out.println(masinaRepo.findByOwner("Akim Nano"));
-
-		};
-
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(ViewMasina viewMasina){
+//		return args -> {
+//
+//
+//
+//			viewMasina.play();
+//
+//		};
+//
+//	}
 }

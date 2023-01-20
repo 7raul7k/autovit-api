@@ -1,16 +1,17 @@
 package ro.mycode.autovitapi.service;
 
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ro.mycode.autovitapi.exceptions.CarExistException;
 import ro.mycode.autovitapi.exceptions.CarNotFoundException;
 import ro.mycode.autovitapi.model.Masina;
 import ro.mycode.autovitapi.repository.MasinaRepo;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
-@Component
+@Service
 public class MasinaService {
 
     private MasinaRepo masinaRepo;
@@ -20,71 +21,89 @@ public class MasinaService {
     }
 
     public List<Masina> getallCars(){
-
         return masinaRepo.findAll();
     }
 
-    public void addCar(Masina car) throws CarExistException {
-        if (this.getCarbyOwner(car.getOwner()) != null){
+    @Transactional
+    public void addCar(Masina car) throws CarExistException, CarNotFoundException {
+        if (this.getCarbyOwner(car.getOwner()) == null){
             masinaRepo.save(car);
         }
-        throw new CarExistException("This car exist");
+        throw new CarExistException();
     }
 
-    public void removeCar(Masina car) throws CarNotFoundException{
-        boolean flag = contains(car);
-        if(flag == true){
-            masinaRepo.delete(car);
+    @Transactional
+   public void removeCar(String owner) throws CarNotFoundException{
+        Optional<Masina> car = this.masinaRepo.findByOwner(owner);
+        if(car.isEmpty()==false){
+            this.masinaRepo.delete(car.get());
+        }else{
+            throw new CarNotFoundException();
         }
-        throw  new CarNotFoundException("Car not found");
-    }
-    public Masina getCarbyOwner(String owner){
-        return masinaRepo.findByOwner(owner);
+   }
+
+    @Transactional
+    public Masina getCarbyOwner(String owner) throws CarNotFoundException {
+
+        Optional<Masina>masina= masinaRepo.findByOwner(owner);
+
+        if(masina.isEmpty()){
+            throw  new CarNotFoundException();
+        }else{
+
+            return  masina.get();
+        }
     }
 
-    public boolean contains(Masina car){
-        return masinaRepo.containsCar(car.getOwner(), car.getBrand());
+    public List<String> getAllCarsByBrand() throws CarNotFoundException {
+        List<String> masina = this.masinaRepo.showAllCarsbyBrand();
+
+        if(masina.isEmpty()){
+            throw new CarNotFoundException();
+        }
+        return masina;
 
     }
 
+    @Transactional
     public void updateBrand(String newBrand,String owner) throws CarNotFoundException{
-        Masina car = getCarbyOwner(owner);
-        boolean flag = contains(car);
+        if(this.masinaRepo.findByOwner(owner) != null){
 
-        if(flag == true){
-            masinaRepo.updateBrand(newBrand, car.getOwner());
+            this.masinaRepo.updateBrand(newBrand,owner);
         }else{
-            throw new CarNotFoundException("Car not found!");
+            throw new CarNotFoundException();
         }
     }
 
-    public void updateColor(String newColor,String owner) throws CarNotFoundException{
-        Masina car = getCarbyOwner(owner);
-        boolean flag = contains(car);
-        if(flag == true){
-            masinaRepo.updateColor(newColor,car.getOwner());
-        }else{
-            throw new CarNotFoundException("Car not found!");
+    public List<String> showCarbyBrand() throws CarNotFoundException {
+
+        List<String> masinas = this.masinaRepo.showAllCarsbyBrand();
+
+        if(masinas.isEmpty()){
+            throw new CarNotFoundException();
         }
-    }
-    public void updateMake(String newMake,String owner) throws CarNotFoundException{
-        Masina car = getCarbyOwner(owner);
-        boolean flag = contains(car);
-        if(flag == true){
-            this.masinaRepo.updateMake(newMake, owner);
-        }else{
-            throw new CarNotFoundException("Car not exist!");
-        }
+        return masinas;
+
     }
 
-    public void updateYear(int year,String owner) throws CarNotFoundException{
-        Masina car = getCarbyOwner(owner);
-        boolean flag = contains(car);
-        if(flag == true){
-            this.masinaRepo.updateYear(year,owner);
-        }else{
-            throw new CarNotFoundException("Car not exist!");
+
+    public List<String> showCarbyColor() throws CarNotFoundException {
+        List<String> masinas = this.masinaRepo.showAllCarsbyColor();
+
+        if(masinas.isEmpty()){
+            throw new CarNotFoundException();
         }
+        return masinas;
     }
+
+    public List<String> showAllCarByYear() throws CarNotFoundException {
+      List<String> masinas = this.masinaRepo.showAllCarsByYear();
+        if(masinas.isEmpty()){
+            throw new CarNotFoundException();
+        }
+        return masinas;
+    }
+
+
 
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ro.mycode.autovitapi.model.Masina;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,25 +15,24 @@ public interface MasinaRepo  extends JpaRepository<Masina, Long> {
 
 
     @Query("Select car from Masina car where car.owner = ?1")
-    Masina findByOwner(String owner);
+    Optional<Masina> findByOwner(String owner);
 
-    @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM Car c where c.owner in ?1 AND c.brand in ?2")
-    boolean containsCar(String owner,String brand);
-
-    @Modifying
-    @Query("UPDATE Masina c SET c.color = ?1 WHERE c.owner = ?2")
-    void updateColor(String newColor,String owner);
+    @Query("Select car.make from Masina car ")
+    Optional<Masina> showCarsByMake();
 
     @Modifying
-    @Query("UPDATE Masina c SET c.brand = ?1 WHERE c.owner = ?2 ")
+    @Query("Update Masina car set car.brand = ?1 where car.owner = ?2 ")
     void updateBrand(String newBrand,String owner);
 
-    @Modifying
-    @Query("UPDATE Masina c SET c.year = ?1 WHERE c.owner = ?2")
-    void updateYear(int newYear,String owner);
+    @Query("SELECT car.brand FROM Masina car ")
+    List<String> showAllCarsbyBrand();
 
-    @Modifying
-    @Query("UPDATE Masina c SET c.make = ?1 WHERE c.owner = ?2")
-    void updateMake(String newMake,String owner);
+    @Query("SELECT car.color FROM Masina car")
+    List<String> showAllCarsbyColor();
+
+    @Query("SELECT car.year FROM Masina car ")
+   List<String> showAllCarsByYear();
+
+
 
 }
