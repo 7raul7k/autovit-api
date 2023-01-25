@@ -2,10 +2,7 @@ package ro.mycode.autovitapi.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ro.mycode.autovitapi.exceptions.CarNotFoundException;
 import ro.mycode.autovitapi.model.Masina;
 import ro.mycode.autovitapi.service.MasinaService;
@@ -14,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/v1")
 public class MasinaResource {
 
     private MasinaService masinaService;
@@ -23,13 +21,13 @@ public class MasinaResource {
     }
 
 
-    @GetMapping("/api/v1/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Masina>> getAllCars(){
         List<Masina> masini= this.masinaService.getallCars();
         return new ResponseEntity<>(masini,HttpStatus.OK );
     }
 
-    @GetMapping("/api/v1/brand")
+    @GetMapping("/brand")
     public ResponseEntity<List<String>> getAllCarsBrand() {
 
         List<String> masini = null;
@@ -42,7 +40,7 @@ public class MasinaResource {
 
     }
 
-    @GetMapping("/api/v1/color")
+    @GetMapping("/color")
     public ResponseEntity<List<String>> getAllCarsColors()  {
         List<String> masini = null;
         try {
@@ -54,7 +52,7 @@ public class MasinaResource {
 
     }
 
-    @GetMapping("/api/v1/year")
+    @GetMapping("/year")
     public ResponseEntity<List<String>> getAllCarsYears() {
         List<String> masini = null;
         try {
@@ -65,7 +63,7 @@ public class MasinaResource {
         }
 
     }
-    @GetMapping("/api/v1/masini/{owner}")
+    @GetMapping("/masini/{owner}")
     public ResponseEntity<Masina> getAllCarsByOwner(@PathVariable String owner) throws CarNotFoundException {
 
         Masina m = this.masinaService.getCarbyOwner(owner);

@@ -17,8 +17,8 @@ public interface MasinaRepo  extends JpaRepository<Masina, Long> {
     @Query("Select car from Masina car where car.owner = ?1")
     Optional<Masina> findByOwner(String owner);
 
-    @Query("Select car.make from Masina car ")
-    Optional<Masina> showCarsByMake();
+    @Query("Select car.make from Masina car where car.make = ?1 ")
+    List<Masina> showCarsByMake(String make);
 
     @Modifying
     @Query("Update Masina car set car.brand = ?1 where car.owner = ?2 ")
