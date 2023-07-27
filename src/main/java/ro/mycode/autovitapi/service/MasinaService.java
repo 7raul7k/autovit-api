@@ -2,6 +2,7 @@ package ro.mycode.autovitapi.service;
 
 
 import org.springframework.stereotype.Service;
+import ro.mycode.autovitapi.dto.MasinaDTO;
 import ro.mycode.autovitapi.exceptions.CarExistException;
 import ro.mycode.autovitapi.exceptions.CarNotFoundException;
 import ro.mycode.autovitapi.model.Masina;
@@ -25,11 +26,21 @@ public class MasinaService {
     }
 
     @Transactional
-    public void addCar(Masina car) throws CarExistException, CarNotFoundException {
-        if (this.getCarbyOwner(car.getOwner()) == null){
-            masinaRepo.save(car);
-        }
-        throw new CarExistException();
+    public void addCar(MasinaDTO car) throws CarExistException, CarNotFoundException {
+       Optional<Masina> masinaOptional = masinaRepo.findByOwner(car.getOwner());
+
+       if(masinaOptional.isEmpty()){
+
+           Masina masina = Masina.builder().owner(car.getOwner())
+                   .year(car.getYear())
+                   .make(car.getMake())
+                   .color(car.getColor())
+                   .brand(car.getBrand()).build();
+
+           this.masinaRepo.save(masina);
+       }
+
+
     }
 
     @Transactional

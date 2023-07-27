@@ -2,6 +2,7 @@ package ro.mycode.autovitapi.view;
 
 
 import org.springframework.stereotype.Repository;
+import ro.mycode.autovitapi.dto.MasinaDTO;
 import ro.mycode.autovitapi.exceptions.CarExistException;
 import ro.mycode.autovitapi.exceptions.CarNotFoundException;
 import ro.mycode.autovitapi.model.Masina;
@@ -76,14 +77,14 @@ public class ViewMasina {
         System.out.println("Insert owner full name:");
         String owner = scanner.nextLine();
         System.out.println("Insert car brand: ");
-        String brand = scanner.nextLine();
+        String brand = scanner.nextLine();0
         System.out.println("Insert car year:");
         int year = Integer.parseInt(scanner.nextLine());
         System.out.println("Insert car color:");
         String color = scanner.nextLine();
         System.out.println("Insert car make:");
         String make = scanner.nextLine();
-        Masina car =  Masina.builder().owner(owner)
+        MasinaDTO car =  MasinaDTO.builder().owner(owner)
                 .brand(brand)
                 .year(year)
                 .color(color)

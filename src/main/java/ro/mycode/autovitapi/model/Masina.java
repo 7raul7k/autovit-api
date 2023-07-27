@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Data
 @Entity(name="Masina")
 @Table(name="masini")
@@ -16,27 +18,36 @@ import javax.persistence.*;
 @SuperBuilder
 public class Masina implements Comparable<Masina> {
 
-
-   @GeneratedValue(
-           strategy = GenerationType.AUTO
-   )
     @Id
-    private Long id;
+    @SequenceGenerator(name="masina_sequence",
+    sequenceName = "masina_sequence",
+    allocationSize = 1)
+    @GeneratedValue(
+            strategy = SEQUENCE,
+            generator =  "masina_sequence"
+    )
+    @Column(name ="id")
+    private long id;
+    @Column(name ="owner",
+    nullable = false,
+    columnDefinition = "TEXT")
     private String owner;
+    @Column(name = "brand",
+    nullable = false,
+    columnDefinition = "TEXT")
     private String brand;
-    private int year;
-
-    private String color;
-
+    @Column(name = "make",
+    nullable = false,
+    columnDefinition = "TEXT")
     private String make;
-
-    public Masina(String owner, String brand, int year, String color, String make) {
-        this.owner = owner;
-        this.brand = brand;
-        this.year = year;
-        this.color = color;
-        this.make = make;
-    }
+    @Column(name = "color",
+    nullable = false,
+    columnDefinition = "TEXT")
+    private String color;
+    @Column(name = "year",
+    nullable = false,
+    columnDefinition = "INT")
+    private int year;
 
 
 
