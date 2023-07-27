@@ -115,6 +115,25 @@ public class MasinaService {
         return masinas;
     }
 
+    public void updateCar(MasinaDTO masinaDTO){
+
+        Optional<Masina> masinaOptional = this.masinaRepo.findByOwner(masinaDTO.getOwner());
+
+        Masina masina = masinaOptional.get();
+
+        if(masinaDTO.getColor() != null){
+
+            masina.setColor(masinaDTO.getColor());
+        }if(masinaDTO.getYear()  < 0 ){
+            masina.setYear(masinaDTO.getYear());
+        }if(masinaDTO.getOwner() != null){
+            masina.setOwner(masinaDTO.getOwner());
+        }
+
+
+        this.masinaRepo.saveAndFlush(masina);
+    }
+
 
 
 }

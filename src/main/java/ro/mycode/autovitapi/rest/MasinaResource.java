@@ -82,6 +82,14 @@ public class MasinaResource {
         return new ResponseEntity<>("Masina a fost Adaugata",HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCar(@RequestBody MasinaDTO masinaDTO){
+
+        this.masinaService.updateCar(masinaDTO);
+
+        return new ResponseEntity<>("Masina a fost actualizata",HttpStatus.OK);
+    }
+
 
 
 }
