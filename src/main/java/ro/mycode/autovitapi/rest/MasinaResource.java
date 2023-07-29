@@ -90,6 +90,14 @@ public class MasinaResource {
         return new ResponseEntity<>("Masina a fost actualizata",HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteCar(@RequestBody MasinaDTO masinaDTO){
+
+        this.masinaService.removeCar(masinaDTO);
+
+        return new ResponseEntity<>("Masina a fost stearsa cu succes",HttpStatus.OK);
+    }
+
 
 
 }

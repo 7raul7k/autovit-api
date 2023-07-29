@@ -44,8 +44,8 @@ public class MasinaService {
     }
 
     @Transactional
-   public void removeCar(String owner) throws CarNotFoundException{
-        Optional<Masina> car = this.masinaRepo.findByOwner(owner);
+   public void removeCar(MasinaDTO masinaDTO) throws CarNotFoundException{
+        Optional<Masina> car = this.masinaRepo.findByOwner(masinaDTO.getOwner());
         if(car.isEmpty()==false){
             this.masinaRepo.delete(car.get());
         }else{

@@ -9,6 +9,7 @@ import ro.mycode.autovitapi.model.Masina;
 import ro.mycode.autovitapi.service.MasinaService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Repository
@@ -77,7 +78,7 @@ public class ViewMasina {
         System.out.println("Insert owner full name:");
         String owner = scanner.nextLine();
         System.out.println("Insert car brand: ");
-        String brand = scanner.nextLine();0
+        String brand = scanner.nextLine();
         System.out.println("Insert car year:");
         int year = Integer.parseInt(scanner.nextLine());
         System.out.println("Insert car color:");
@@ -96,7 +97,16 @@ public class ViewMasina {
         System.out.println("Input owner");
         String owner = scanner.nextLine();
 
-        this.masinaService.removeCar(owner);
+        Masina masinaOptional = this.masinaService.getCarbyOwner(owner);
+
+        MasinaDTO masinaDTO = MasinaDTO.builder().owner(masinaOptional.getOwner())
+                .make(masinaOptional.getMake())
+                .year(masinaOptional.getYear())
+                .color(masinaOptional.getColor())
+                .brand(masinaOptional.getBrand())
+                .build();
+
+        this.masinaService.removeCar(masinaDTO);
     }
 
     public void showCarsByBrand() throws CarNotFoundException {
